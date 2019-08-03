@@ -83,7 +83,7 @@ class Game extends React.Component {
         'Go to game start';
 
       let className = '';
-      if (this.state.isActive == move) {
+      if (this.state.isActive === move) {
         className += ' bold';
       }
       return (
