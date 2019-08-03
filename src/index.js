@@ -7,6 +7,10 @@ function Square(props) {
 }
 
 class Board extends React.Component {
+  constructor(props){
+    super(props);
+    this.size = 3
+  }
 
   renderSquare(i) {
     return <Square value={this.props.squares[i]} onClick={()=> this.props.onClick(i)}/>;
@@ -15,21 +19,17 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {
+          square_array(this.size).map((rows) => {
+            return (
+              <div className="board-row">
+                {rows.map((value) => {
+                  return this.renderSquare(value);
+                })}
+              </div>
+            )
+          })
+        }
       </div>
     );
   }
@@ -37,7 +37,7 @@ class Board extends React.Component {
 
 class Game extends React.Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       history: [{squares: Array(9).fill(null)}],
       stepNumber: 0,
@@ -146,4 +146,15 @@ function calculateWinner(squares) {
 
 function map_position(i) {
   return {col: i % 3, row: Math.floor(i / 3)};
+}
+
+// [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+function square_array(size) {
+  const range = Array.from(Array(size ** 2).keys());
+  let square_array = [];
+  for (let i = 0; i < size; i++) {
+    const pointer = i * size;
+    square_array.push(range.slice(pointer, pointer + size));
+  }
+  return square_array;
 }
