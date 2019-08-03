@@ -59,7 +59,8 @@ class Game extends React.Component {
         position: map_position(i)
       }]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
+      isActive: null
     });
   }
 
@@ -67,6 +68,7 @@ class Game extends React.Component {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+      isActive: step,
     });
   }
 
@@ -79,9 +81,14 @@ class Game extends React.Component {
       const desc = move ?
         `Go to move #${move}(col: ${step.position['col']}, row: ${step.position['row']})` :
         'Go to game start';
+
+      let className = '';
+      if (this.state.isActive == move) {
+        className += ' bold';
+      }
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={className} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
